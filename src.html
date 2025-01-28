@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MakeMyTrip - #1 Travel Website</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            height: 100vh;
+            background: linear-gradient(to bottom, #8a2be2 75%, white 25%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        .header {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            width: 100%;
+        }
+        .logo {
+            height: 36px;
+            width: 113px;
+        }
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            padding: 30px;
+            margin-top: 30px;
+            position: relative;
+        }
+        .trip-type, .special-fare {
+            display: flex;
+            justify-content: flex-start;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .trip-type button, .special-fare button {
+            padding: 10px 15px;
+            border: none;
+            background: none;
+            color: #4a4a4a;
+            cursor: pointer;
+            transition: color 0.3s, font-weight 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .trip-type button.active, .special-fare button.active {
+            color: #007bff;
+            font-weight: bold;
+        }
+        .trip-type button .circle, .special-fare button .circle {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #4a4a4a;
+            border-radius: 50%;
+            position: relative;
+        }
+        .trip-type button.active .circle, .special-fare button.active .circle {
+            background-color: #007bff;
+            border: none;
+        }
+        .trip-type button .circle::after, .special-fare button .circle::after {
+            content: "";
+            width: 8px;
+            height: 8px;
+            background-color: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            display: none;
+        }
+        .trip-type button.active .circle::after, .special-fare button.active .circle::after {
+            display: block;
+        }
+        .trip-details {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        .trip-details div {
+            display: flex;
+            flex-direction: column;
+        }
+        .trip-details div span {
+            font-weight: bold;
+        }
+        .main-card {
+            background-color: #fff;
+            width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 30px;
+            margin-top: 30px;
+        }
+        .categories {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+        .categories button {
+            background: none;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            transition: color 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+        .categories button.active {
+            color: #007bff;
+            font-weight: bold;
+        }
+        .categories button i {
+            font-size: 28px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img class="logo" src="https://promos.makemytrip.com/Growth/Images/1x/mmt_dt_top_icon.png" alt="MakeMyTrip Logo">
+    </div>
+    <div class="container main-card">
+        <div class="categories">
+            <button class="active" onclick="selectButton(this)">
+                <i class="fas fa-plane"></i>
+                <span>Flights</span>
+            </button>
+            <button onclick="selectButton(this)">
+                <i class="fas fa-hotel"></i>
+                <span>Hotels</span>
+            </button>
+            <button onclick="selectButton(this)">
+                <i class="fas fa-home"></i>
+                <span>Homestays & Villas</span>
+            </button>
+            <button onclick="selectButton(this)">
+                <i class="fas fa-suitcase-rolling"></i>
+                <span>Holiday Packages</span>
+            </button>
+            <button onclick="selectButton(this)">
+                <i class="fas fa-train"></i>
+                <span>Trains</span>
+            </button>
+            <button onclick="selectButton(this)">
+                <i class="fas fa-bus"></i>
+                <span>Buses</span>
+            </button>
+            <button onclick="selectButton(this)">
+                <i class="fas fa-taxi"></i>
+                <span>Cabs</span>
+            </button>
+        </div>
+        <div class="trip-type">
+            <button class="active" onclick="selectTripType(this)">
+                <span class="circle"></span> One Way
+            </button>
+            <button onclick="selectTripType(this)">
+                <span class="circle"></span> Round Trip
+            </button>
+            <button onclick="selectTripType(this)">
+                <span class="circle"></span> Multi City
+            </button>
+        </div>
+        <div class="trip-details">
+            <div>
+                <span>From</span>
+                <input type="text" id="from" value="Delhi (DEL, Delhi Airport India)" autocomplete="off">
+            </div>
+            <div>
+                <span>To</span>
+                <input type="text" id="to" value="Bengaluru (BLR, Bengaluru International Airport)" autocomplete="off">
+            </div>
+            <div>
+                <span>Departure</span>
+                <input type="text" id="departure" value="January 29, 2025" autocomplete="off">
+            </div>
+            <div>
+                <span>Travellers & Class</span>
+                <input type="text" id="travellers" value="1 Traveller, Economy/Premium Economy" autocomplete="off">
+            </div>
+        </div>
+        <div class="special-fare">
+            <button class="active" onclick="selectSpecialFare(this)">
+                <span class="circle"></span> EXTRA SAVINGS
+            </button>
+            <button onclick="selectSpecialFare(this)">
+                <span class="circle"></span> Regular
+            </button>
+            <button onclick="selectSpecialFare(this)">
+                <span class="circle"></span> Student
+            </button>
+            <button onclick="selectSpecialFare(this)">
+                <span class="circle"></span> Senior Citizen
+            </button>
+            <button onclick="selectSpecialFare(this)">
+                <span class="circle"></span> Armed Forces
+            </button>
+            <button onclick="selectSpecialFare(this)">
+                <span class="circle"></span> Doctor and Nurses
+            </button>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <script>
+        function selectButton(selectedButton) {
+            const buttons = document.querySelectorAll('.categories button');
+            buttons.forEach(button => {
+                button.classList.remove('active');
+            });
+            selectedButton.classList.add('active');
+        }
+
+        function selectTripType(selectedButton) {
+            const buttons = document.querySelectorAll('.trip-type button
